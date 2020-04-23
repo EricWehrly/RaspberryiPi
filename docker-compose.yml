@@ -35,4 +35,5 @@ services:
     environment:
       - TZ=America/New_York
     restart: always
+    privileged: true
     network_mode: host
