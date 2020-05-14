@@ -15,5 +15,9 @@ cp docker-compose.yml /etc/
 chmod 755 /etc/init.d/docker-startup
 update-rc.d docker-startup defaults
 
+# Apparently there were some problems with IPV6 getting routed,
+# may need to apply this fix for apt
+# https://raspberrypi.stackexchange.com/a/55951
+
 # RetroPie? 
 # https://retropie.org.uk/docs/Manual-Installation/
