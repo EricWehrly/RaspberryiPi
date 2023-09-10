@@ -5,4 +5,5 @@
 
 cd /home/pi/docker
 rm -f docker-compose.log
+docker-compose pull
 docker-compose up > docker-compose.log
