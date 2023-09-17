@@ -1,6 +1,7 @@
 sudo apt-get update -y && sudo apt-get upgrade -y
 
-apt-get install -y docker steamlink
+curl -sSL https://get.docker.com/ | sudo sh
+sudo apt-get install -y steamlink
 
 # TODO: Export current PWD as environment variable for use in other scripts
 
