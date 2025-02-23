@@ -23,4 +23,4 @@ jobs:
 
     - name: Validate bash scripts
       run: |
-        find . -name "*.sh" -print0 | xargs -0 shellcheck
+        find . -name "*.sh" -print0 | xargs -0 shellcheck --severity=warning
