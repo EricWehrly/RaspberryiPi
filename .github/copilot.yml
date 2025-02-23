@@ -1,0 +1,13 @@
+# Copilot prompt augmentation instructions for home server projects
+
+# General instructions
+general:
+  - "This project is for operating a home server off of a Raspberry Pi."
+  - "The repository contains scripts and configurations for various services and tools."
+
+# Specific instructions
+specific:
+  - "Provide guidance on setting up and configuring home server services."
+  - "Include examples and best practices for using the scripts and configurations."
+  - "Mention any dependencies or prerequisites for the services and tools."
+  - "Highlight any potential issues or troubleshooting steps for common problems."
