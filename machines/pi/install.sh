@@ -16,6 +16,9 @@ cp machines/pi/docker-compose.yml /etc/
 chmod 755 /etc/init.d/docker-startup
 update-rc.d docker-startup defaults
 
+# Create the named docker compose file using the config command
+docker-compose -f machines/pi/docker-compose.yml config > /etc/docker-compose.yml
+
 # Apparently there were some problems with IPV6 getting routed,
 # may need to apply this fix for apt
 # https://raspberrypi.stackexchange.com/a/55951
