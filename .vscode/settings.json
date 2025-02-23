@@ -1,6 +1,0 @@
-{
-  "shellcheck.enable": true,
-  "shellcheck.run": "onType",
-  "shellcheck.executablePath": "shellcheck",
-  "shellcheck.severity": "warning"
-}
