@@ -1,0 +1,26 @@
+name: Lint
+
+on: [push, pull_request]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Docker Compose
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y docker-compose
+
+    - name: Validate Docker Compose file
+      run: docker-compose -f docker-compose.yml config
+
+    - name: Install ShellCheck
+      run: sudo apt-get install -y shellcheck
+
+    - name: Validate bash scripts
+      run: |
+        find . -name "*.sh" -print0 | xargs -0 shellcheck

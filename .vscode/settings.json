@@ -1,0 +1,5 @@
+{
+  "shellcheck.enable": true,
+  "shellcheck.run": "onType",
+  "shellcheck.executablePath": "shellcheck"
+}
