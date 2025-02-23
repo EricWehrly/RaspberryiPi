@@ -11,7 +11,7 @@ sudo apt-get install -y steamlink
 
 cp scripts/docker-compose.sh /usr/local/bin/docker-compose
 cp scripts/docker-startup.sh /etc/init.d/docker-startup
-cp docker-compose.yml /etc/
+cp machines/pi/docker-compose.yml /etc/
 
 chmod 755 /etc/init.d/docker-startup
 update-rc.d docker-startup defaults
