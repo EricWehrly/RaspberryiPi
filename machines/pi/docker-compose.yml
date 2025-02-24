@@ -9,3 +9,7 @@ services:
     extends:
       file: ./services/homeassistant.yml
       service: homeassistant
+  jellyfin-slackbot:
+    extends:
+      file: ./services/jellyfin-slackbot.yml
+      service: slack-bot
