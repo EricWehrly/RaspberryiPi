@@ -16,4 +16,4 @@ jobs:
         sudo apt-get install -y docker-compose
 
     - name: Validate Docker Compose file
-      run: docker-compose -f docker-compose.yml config
+      run: docker-compose -f machines/pi/docker-compose.yml config

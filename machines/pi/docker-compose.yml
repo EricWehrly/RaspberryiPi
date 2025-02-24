@@ -1,0 +1,11 @@
+version: "3"
+
+services:
+  pihole:
+    extends:
+      file: ./services/pihole.yml
+      service: pihole
+  homeassistant:
+    extends:
+      file: ./services/homeassistant.yml
+      service: homeassistant
