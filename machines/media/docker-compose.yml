@@ -1,0 +1,7 @@
+version: "3"
+
+services:
+  jellyfin-slackbot:
+    extends:
+      file: ./services/jellyfin-slackbot.yml
+      service: slack-bot
