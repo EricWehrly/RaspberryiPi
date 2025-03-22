@@ -26,8 +26,9 @@ function parseMessage(message) {
 async function searchMedia(query) {
   console.log(`🔍 Searching for: "${query}"`);
   try {
+    const encodedQuery = encodeURIComponent(query);
     const response = await axios.get(`${process.env.JELLYSEERR_API_URL}/api/v1/search`, {
-      params: { query },
+      params: { query: encodedQuery },
       headers: { 'X-Api-Key': process.env.JELLYSEERR_API_KEY }
     });
     
