@@ -15,9 +15,37 @@ function createSlackApp() {
   const app = new App({
     token: process.env.SLACK_BOT_TOKEN,
     signingSecret: process.env.SLACK_SIGNING_SECRET,
-    socketMode: true, // Changed to true to use Socket Mode
-    appToken: process.env.SLACK_APP_TOKEN, // Only needed for Socket Mode
+    socketMode: true,
+    appToken: process.env.SLACK_APP_TOKEN,
+    // Add custom Socket Mode client options
+    // Documentation: https://slack.dev/bolt-js/concepts#socket-mode
+    customClientArgs: {
+      socketMode: {
+        // Socket Mode reconnection parameters
+        // https://slack.dev/node-slack-sdk/socket-mode#handle-connections-and-disconnections
+        reconnect: true,                   // Boolean: Enable automatic reconnection
+        reconnectDecay: 1.5,               // Factor: Exponential backoff multiplier (delay * decay^attempts)
+        reconnectJitter: 0.5,              // Factor: Random jitter ratio to prevent reconnection storms
+        reconnectDelay: 3000,              // Milliseconds: Initial delay before first reconnection attempt
+        maxReconnectionAttempts: 10        // Count: Maximum reconnection attempts before giving up
+      }
+    }
   });
+
+  // Add connection event listeners
+  if (app.client.socket) {
+    app.client.socket.on('connected', () => {
+      console.log('🟢 Socket Mode connected successfully');
+    });
+    
+    app.client.socket.on('disconnected', () => {
+      console.log('🟠 Socket Mode disconnected, will attempt to reconnect');
+    });
+    
+    app.client.socket.on('connection_error', (error) => {
+      console.error('🔴 Socket Mode connection error:', error.message);
+    });
+  }
 
   // Add error handler before other listeners
   app.error(async (error) => {
