@@ -11,9 +11,21 @@ const requiredEnvVars = [
 
 // Add global unhandled promise rejection handler
 process.on('unhandledRejection', (reason, promise) => {
-  console.error('🔴 Unhandled Promise Rejection:', reason);
-  // Optionally log the promise that caused the rejection
-  console.error('Promise:', promise);
+  // Check for the common socket mode disconnect error
+  if (reason instanceof Error && reason.message.includes("Unhandled event 'server explicit disconnect'")) {
+    console.error('🔴 Slack socket disconnected - reconnection should happen automatically');
+    return;
+  }
+  
+  // For other errors, just show the error message without the full stack trace
+  const errorMessage = reason instanceof Error ? reason.message : String(reason);
+  console.error(`🔴 Unhandled Promise Rejection: ${errorMessage}`);
+  
+  // For debugging purposes, enable this to see full stack traces
+  if (process.env.DEBUG_MODE === 'true') {
+    console.error('Full error:', reason);
+    console.error('Promise:', promise);
+  }
 });
 
 function validateEnvironment() {
