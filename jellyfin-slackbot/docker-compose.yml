@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  slack-bot:
+    build: .
+    environment:
+      - SLACK_BOT_TOKEN=${SLACK_BOT_TOKEN}
+      - JELLYSEERR_API_URL=${JELLYSEERR_API_URL}
+    ports:
+      - "3000:3000"
