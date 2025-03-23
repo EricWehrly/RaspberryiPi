@@ -55,3 +55,8 @@ function validateEnvironment() {
     process.exit(1);
   }
 })();
+
+module.exports = {
+  validateEnvironment,
+  checkJellyseerrHealth
+};

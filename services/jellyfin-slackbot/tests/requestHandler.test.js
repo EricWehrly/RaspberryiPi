@@ -11,4 +11,8 @@ describe('requestHandler', () => {
     const message = 'request video Invalid Video';
     await expect(requestHandler.handleRequest(message)).rejects.toThrow('Failed to forward request to Jellyseerr');
   });
+
+  test('should handleRequest function', async () => {
+    // Add your test implementation here
+  });
 });
