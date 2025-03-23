@@ -44,6 +44,11 @@ async function searchMedia(query) {
 }
 
 async function submitMediaRequest(media) {
+
+  if(!media.id) {
+    return `Failed to request. Media object does not contain id.`;
+  }
+
   console.log(`🎬 Submitting request for: ${media.title || media.name}`);
   try {
     // API reference: https://github.com/fallenbagel/jellyseerr/blob/main/overseerr-api.yml
@@ -67,10 +72,21 @@ async function submitMediaRequest(media) {
     if (error.response) {
       console.error('Response data:', error.response.data);
     }
-    throw new Error(`Failed to request: ${error.message}`);
+    return `Failed to request. Please consult server logs.`;
   }
 }
 
-module.exports = {
+const productionExports = {
   handleRequest
 };
+
+const testExports = {
+  handleRequest,
+  parseMessage,
+  searchMedia,
+  submitMediaRequest
+};
+
+module.exports = process.env.NODE_ENV === 'test' 
+  ? testExports
+  : productionExports;

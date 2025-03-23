@@ -6,19 +6,28 @@ jest.mock('axios');
 
 describe('handleRequest', () => {
   beforeEach(() => {
-    // Reset mocks before each test
     jest.clearAllMocks();
     
     // Set environment variables needed by the functions
     process.env.JELLYSEERR_API_URL = 'https://jellyseerr-api.example.com';
     process.env.JELLYSEERR_API_KEY = 'test-api-key';
+    
+    // Silence console logs during tests
+    jest.spyOn(console, 'log').mockImplementation(() => {});
+    jest.spyOn(console, 'error').mockImplementation(() => {});
+  });
+  
+  afterEach(() => {
+    console.log.mockRestore();
+    console.error.mockRestore();
   });
 
   test('should return message and not call submitMediaRequest when no results found', async () => {
     // Mock axios.get to return empty results
     axios.get.mockResolvedValueOnce({ data: { results: [] } });
     
-    const result = await handleRequest('request movie nonexistent');
+    const movieName = 'nonexistent';
+    const result = await handleRequest(`request movie ${movieName}`);
     
     // Verify search was called but not submit
     expect(axios.get).toHaveBeenCalledTimes(1);
@@ -27,7 +36,7 @@ describe('handleRequest', () => {
     // Verify correct return type and content includes query
     expect(typeof result).toBe('string');
     expect(result).toContain('No results found');
-    expect(result).toContain('nonexistent');
+    expect(result).toContain(movieName);
   });
 
   test('should submit media request when results are found', async () => {
@@ -67,7 +76,7 @@ describe('handleRequest', () => {
     expect(axios.get.mock.calls[0][1].params.query).toBe('Inception');
   });
 
-  test('should throw error when media request submission fails', async () => {
+  test('should return error message when media request submission fails', async () => {
     const mockMedia = { id: 456, title: 'Error Movie', mediaType: 'movie' };
     const requestError = new Error('API Error');
     requestError.response = { data: { message: 'API Error details' } };
@@ -75,12 +84,16 @@ describe('handleRequest', () => {
     axios.get.mockResolvedValueOnce({ data: { results: [mockMedia] } });
     axios.post.mockRejectedValueOnce(requestError);
     
-    // Verify the error is propagated
-    await expect(handleRequest('request movie Error Movie'))
-      .rejects.toThrow('Failed to request');
+    // Should now return error message instead of throwing
+    const result = await handleRequest('request movie Error Movie');
     
+    // Verify APIs were called
     expect(axios.get).toHaveBeenCalledTimes(1);
     expect(axios.post).toHaveBeenCalledTimes(1);
+    
+    // Verify error message is returned
+    expect(typeof result).toBe('string');
+    expect(result).toContain('Failed to request');
   });
 
   test('should use the first result when multiple results are returned', async () => {
