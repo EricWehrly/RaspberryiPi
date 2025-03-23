@@ -15,5 +15,7 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y docker-compose
 
+    # We really want to do this for each machine,
+    # but we aren't even realistically managing the pi this way yet, anyway
     - name: Validate Docker Compose file
       run: docker-compose -f machines/pi/docker-compose.yml config

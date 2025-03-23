@@ -1,0 +1,32 @@
+name: Jellyfin Slackbot Tests
+
+on:
+  push:
+    paths:
+      - 'services/jellyfin-slackbot/**'
+  pull_request:
+    paths:
+      - 'services/jellyfin-slackbot/**'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Build Docker image
+        run: |
+          cd services/jellyfin-slackbot
+          docker build -t jellyfin-slackbot:test .
+      
+      - name: Run tests with Docker
+        run: docker run jellyfin-slackbot:test yarn test
+      
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-results
+          path: services/jellyfin-slackbot/test-results
+          retention-days: 7
